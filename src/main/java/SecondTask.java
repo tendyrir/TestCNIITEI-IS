@@ -1,9 +1,7 @@
 import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +38,7 @@ public class SecondTask {
     private static ObjectElement getObjectElementById(Integer objectId) {
         ObjectElement objectElement = new ObjectElement();
             try {
-                XMLEventReader xmlEventReader = createXmlEventReader(Utils.asAddrObjXml);
+                XMLEventReader xmlEventReader = Utils.createXmlEventReader(Utils.asAddrObjXml);
                 while (xmlEventReader.hasNext()) {
                     XMLEvent nextEvent = xmlEventReader.nextEvent();
                     if (nextEvent.isStartElement()) {
@@ -73,7 +71,7 @@ public class SecondTask {
     private static Integer findParentObjId(Integer objectId) {
         Integer parentObjId = null;
             try {
-                XMLEventReader xmlEventReader = createXmlEventReader(Utils.asAdmHierarchyXml);
+                XMLEventReader xmlEventReader = Utils.createXmlEventReader(Utils.asAdmHierarchyXml);
                 while (xmlEventReader.hasNext()) {
                     XMLEvent nextEvent = xmlEventReader.nextEvent();
                     if (nextEvent.isStartElement()) {
@@ -104,15 +102,9 @@ public class SecondTask {
 
 
     private static List<ObjectElement> parseXMLPassages() {
-
-//        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-//        try (FileInputStream fis = new FileInputStream(Utils.asAddrObjXml)) {
-
         List<ObjectElement> resultList = new ArrayList<>();
-
             try {
-//                XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(fis);
-                XMLEventReader xmlEventReader = createXmlEventReader(Utils.asAddrObjXml);
+                XMLEventReader xmlEventReader = Utils.createXmlEventReader(Utils.asAddrObjXml);
                 while (xmlEventReader.hasNext()) {
                     XMLEvent nextEvent = xmlEventReader.nextEvent();
                     if (nextEvent.isStartElement()) {
@@ -132,11 +124,6 @@ public class SecondTask {
         return resultList;
     }
 
-    private static XMLEventReader createXmlEventReader(String filePath) throws IOException, XMLStreamException {
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
-        FileInputStream fis = new FileInputStream(filePath);
-        return xmlInputFactory.createXMLEventReader(fis);
-    }
 
     private static boolean isActualityValid(ObjectElement obj) {
         return obj.getIsActive() == 1 && obj.getIsActual() == 1;

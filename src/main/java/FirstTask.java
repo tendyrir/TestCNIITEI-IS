@@ -1,9 +1,7 @@
 import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,12 +17,9 @@ public class FirstTask {
     }
 
     private static List<ObjectElement> parseXMLFistTask(Date queryDate, List<Integer> queryIdList) {
-        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
         List<ObjectElement> resultList = new ArrayList<>();
-        try (FileInputStream fis = new FileInputStream(Utils.asAddrObjXml)) {
-
             try {
-                XMLEventReader xmlEventReader = xmlInputFactory.createXMLEventReader(fis);
+                XMLEventReader xmlEventReader = Utils.createXmlEventReader(Utils.asAddrObjXml);
                 while (xmlEventReader.hasNext()) {
                     XMLEvent nextEvent = xmlEventReader.nextEvent();
                     if (nextEvent.isStartElement()) {
@@ -45,12 +40,9 @@ public class FirstTask {
                         }
                     }
                 }
-            } catch (XMLStreamException e) {
+            } catch (XMLStreamException | IOException e) {
                 throw new RuntimeException("Error parsing XML", e);
             }
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading XML file", e);
-        }
         return resultList;
     }
 

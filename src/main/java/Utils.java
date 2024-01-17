@@ -1,5 +1,10 @@
 import javax.xml.namespace.QName;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.StartElement;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -34,6 +39,12 @@ public class Utils {
         objectElement.setIsActive(isActual);
 
         return objectElement;
+    }
+
+    public static XMLEventReader createXmlEventReader(String filePath) throws IOException, XMLStreamException {
+        XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();
+        FileInputStream fis = new FileInputStream(filePath);
+        return xmlInputFactory.createXMLEventReader(fis);
     }
 
     public static List<Integer> getIdListFromString(String inputIdList) {
